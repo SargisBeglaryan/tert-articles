@@ -1,0 +1,50 @@
+.homePageLink {
+	background-image: -webkit-gradient(linear, 0 0, 299 11, color-stop(0.023, #ff9c79), to(#ff788a));
+	background-image: -webkit-linear-gradient(357.89307870931185deg, #ff9c79 2.3%, #ff788a);
+	background-image: -moz-linear-gradient(357.89307870931185deg, #ff9c79 2.3%, #ff788a);
+	background-image: -o-linear-gradient(357.89307870931185deg, #ff9c79 2.3%, #ff788a);
+	background-image: linear-gradient(92.10692129068815deg, #ff9c79 2.3%, #ff788a);
+    display: block;
+    margin: 30px auto 20px;
+    width: 200px;
+    height: 50px;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 50px;
+}
+	
+.homePageLink:hover {
+	text-decoration: none;
+	color: #fff;
+	-webkit-animation: icon-bounce 0.5s ease-in-out;
+    animation: icon-bounce 0.5s ease-in-out;
+}
+@-webkit-keyframes icon-bounce {
+   1% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.04);
+        transform: scale(1.04);
+    }
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+@keyframes icon-bounce {
+    1% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.04);
+        transform: scale(1.04);
+    }
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}

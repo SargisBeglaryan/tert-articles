@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::any('/',['uses' => 'IndexController@index', 'as' => 'home']);
+Route::get('/',['uses' => 'IndexController@index', 'as' => 'home']);
+Route::get('/articles',['uses' => 'ArticlesController@allArticles', 'as' => 'articles']);
+Route::post('/getArticles',['uses' => 'ArticlesController@getExternalArticles', 'as' => 'getArticles']);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
