@@ -1,6 +1,5 @@
 @extends('panelViews::master')
 @section('bodyClass')
-login
 @stop
 @section('body')
     <div class="container">
@@ -19,7 +18,7 @@ login
                         </div>
                         <div class="panel-body">
                             <div class="logo-holder">
-                                <img src="{{asset(Config::get('panel.logo'))}}" />
+                                <img src="{{asset('/packages/serverfireteam/panel/img/helix-logo.jpg')}}" />
                             </div>
                             {!! Form::open(array('url' => 'panel/login')) !!}
                                 <fieldset>

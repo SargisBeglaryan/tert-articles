@@ -71,7 +71,6 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-        <div class="powered-by"><a href="http://laravelpanel.com">{{ \Lang::get('panel::fields.thankYouNote') }}</a></div>
         <div id="page-wrapper">
 
 

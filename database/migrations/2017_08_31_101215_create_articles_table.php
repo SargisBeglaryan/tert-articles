@@ -17,7 +17,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function(Blueprint $table) {
             $table->increments('id')->index();
             $table->string('title',256);
-            $table->string('description',256);
+            $table->text('description');
             $table->string('image_url',256);
             $table->string('article_url',256);
             $table->dateTime('date');

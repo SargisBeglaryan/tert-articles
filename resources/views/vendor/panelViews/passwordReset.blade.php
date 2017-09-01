@@ -16,7 +16,7 @@ login
                         </div>
                         <div class="panel-body">
                             <div class="logo-holder">
-                                <img src="{{asset("packages/serverfireteam/panel/img/logo.png")}}" />
+                                <img src="{{asset("packages/serverfireteam/panel/img/helix-logo.jpg")}}" />
                             </div>
                             <form action="{!! url('panel/reset') !!}" method="POST">
                                 <fieldset>
