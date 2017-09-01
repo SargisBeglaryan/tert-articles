@@ -10,12 +10,16 @@
 
 @section('content')
 	<div class='container'>
+		<div class="loader"></div>
 		<div class="token">{{ csrf_token() }}</div>
-		<div class='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
-			<a class="admin" href="{{asset('panel')}}">Admin</a>
+		<div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>
+			<a class="admin btn" href="{{asset('panel')}}"><span>Admin</span></a>
 		</div>
-		<div class='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
-			<a class="articles" href="{{asset('articles')}}">Articles</a>
+		<div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>
+			<a class="articles btn" href="{{asset('articles')}}"><span>Articles</span></a>
+		</div>
+		<div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>
+			<button type='button' class="btn updateArticles"><span>Update Articles</span></a>
 		</div>
 	</div>
 

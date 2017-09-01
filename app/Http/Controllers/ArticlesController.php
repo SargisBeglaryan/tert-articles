@@ -8,7 +8,7 @@ use Exception;
 
 class ArticlesController extends CrudController
 {
-    protected $paginationCount;
+    protected $paginationCount= 0;
     protected $currentPage = 1;
     protected $articlesCount = 0;
 
@@ -40,9 +40,7 @@ class ArticlesController extends CrudController
         $this->edit->add('title','Title', 'text')->rule('required|min:5');
         $this->edit->add('description','Description', 'textarea')->rule('required|min:5');
         // if($this->edit->status !== 'modify'){
-        //     $this->edit->add('slug','Alias', 'text')->rule('required');
         // }else {
-        //     $this->edit->add('slug','Alias', 'disable');
         // }
         $this->edit->add('article_url','Article Url', 'text');
         $this->edit->add('date', 'Article Date', 'date')->format('Y-m-ds')->rule('required');
@@ -77,6 +75,9 @@ class ArticlesController extends CrudController
     }
 
     protected function getPaginationCount($articlesPagination){
+        if(strlen($articlesPagination) < 10){
+            return false;
+        }
         $DOM = new \DOMDocument('1.0', 'utf-8');
         $DOM->loadHTML(mb_convert_encoding($articlesPagination, 'HTML-ENTITIES', 'UTF-8'));
         $paginationLength = $DOM->getElementsByTagName('a')->length;
@@ -93,9 +94,14 @@ class ArticlesController extends CrudController
     }
 
     public function getExternalArticles($currentUrl = null){
-        try {
+         try {
             $url = $this->setPageUrl($currentUrl);
-            $content = file_get_contents($url);
+            try{
+                $content = file_get_contents($url);
+            } catch(Exception $e) {
+                $this->currentPage++;
+                $this->getExternalArticles($url);
+            }
             $first_step = explode( '<div id="right-col">' , $content );
             $second_step = explode("</div>", $first_step[1]);
             $this->getPaginationCount($second_step[12]);
@@ -108,23 +114,24 @@ class ArticlesController extends CrudController
                 }
             }
             for($i = 0; $i < 10; $i++){
-                if($this->articlesCount == 1000){
-                    return response()->json(true);
+                if($this->articlesCount == 100){
                     break;
                 }
                 try {
-                    $this->insertOnDatabase($second_step[$i]);
+                    $insertResult = $this->insertOnDatabase($second_step[$i]);
                 } catch(Exception $e){
                     break;
                 }
                 $this->articlesCount++;
             }
-                if($this->articlesCount != 1000) {
-                    $this->currentPage++;
-                    $this->getExternalArticles($url);
-                }
+            if($this->articlesCount == 100){
+                return response()->json(true);
+            } else {
+                $this->currentPage++;
+                $this->getExternalArticles($url);
+            }
         }  catch (Exception $e) {
-            //return response()->json(false);
+            return response()->json(false);
         }
     }
 
@@ -140,6 +147,10 @@ class ArticlesController extends CrudController
         $DOM = new \DOMDocument('1.0', 'utf-8');
         $DOM->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
         $linkLength = $DOM->getElementsByTagName('a')->length;
+        $imageLength = $DOM->getElementsByTagName('img')->length;
+        if($linkLength > 6 && $imageLength < 1){
+            throw new \Exception('Articles the end');
+        }
         $article->article_url = $this->clearString($DOM->getElementsByTagName('a')->item($linkLength - 1)->getAttribute('href'));
         $article->description = $this->clearString($DOM->getElementsByTagName('a')->item($linkLength - 1)->nodeValue);
         $article->title = $this->clearString($DOM->getElementsByTagName('a')->item($linkLength - 2)->nodeValue);
@@ -147,7 +158,6 @@ class ArticlesController extends CrudController
         foreach ($images as $image) {
             $article->image_url = $this->clearString($image->getAttribute('src'));
         }
-        $article->image_url = $DOM->getElementsByTagName('img')->item(0)->getAttribute('src');
         $dateString = $this->clearString($DOM->getElementsByTagName('p')->item(0)->nodeValue);
         $dateArray = explode('•', $dateString);
         $articleDate = explode('.', trim($dateArray[1]));
@@ -155,7 +165,8 @@ class ArticlesController extends CrudController
         $article->date = implode("-",$articleDate).'-'.trim($dateArray[0]);
         $imageFileArray = explode("/", $article->image_url);
         $imageName = $imageFileArray[count($imageFileArray)-1];
-        $uploadedImage = file_put_contents('images/'.$imageName, $article->image_url);
+        $getImageContent = file_get_contents($article->image_url);
+        $uploadedImage = file_put_contents('images/'.$imageName, $getImageContent);
         if(!$uploadedImage){
             return false;
         }
