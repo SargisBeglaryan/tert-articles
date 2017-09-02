@@ -114,7 +114,7 @@ class ArticlesController extends CrudController
                 }
             }
             for($i = 0; $i < 10; $i++){
-                if($this->articlesCount == 100){
+                if($this->articlesCount == 1000){
                     break;
                 }
                 try {
@@ -124,7 +124,7 @@ class ArticlesController extends CrudController
                 }
                 $this->articlesCount++;
             }
-            if($this->articlesCount == 100){
+            if($this->articlesCount == 1000 || $this->articlesCount > 1000){
                 return response()->json(true);
             } else {
                 $this->currentPage++;

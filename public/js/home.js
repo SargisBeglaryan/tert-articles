@@ -8,14 +8,18 @@ $(document).ready(function(){
 			type: "POST",
 			data: {_token:  $('.token').text().trim()},
 			success: function(data) {
-				$('.loader').hide(100);
-				$('.updateArticles').removeAttr("disabled");
-				$('a').removeAttr("disabled");
-				alert("Success!");
+				ajaxCallResponse('Success');
 			},
 			error: function (xhr, status, error) {
+				ajaxCallResponse('Error!');
 				console.log("Sorry, there was a problem!");
 			}
 		});
 	});
+	function ajaxCallResponse(message){
+		$('.loader').hide(100);
+		$('.updateArticles').removeAttr("disabled");
+		$('a').removeAttr("disabled");
+		alert(message);
+	}
 });
